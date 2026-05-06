@@ -1,0 +1,8 @@
+{
+  "created_local_time": "2026-05-06T00:01:19",
+  "latest_manuscript": "./paper_ready/HelixPair_NeurIPS2026_reviewed.docx",
+  "latest_manuscript_sha256": "39148519FC225A92CAE6B5E36DE7557AF3AEE3B6E926F0C703A2C1E309949B19",
+  "locked_baseline": "./paper_ready/HelixPair_NeurIPS2026_REVIEWED_BASELINE_LOCKED.docx",
+  "locked_baseline_sha256": "39148519FC225A92CAE6B5E36DE7557AF3AEE3B6E926F0C703A2C1E309949B19",
+  "policy": "Full HelixPair method/training code included; comparator implementations, external probe code, historical searches, checkpoints, and cache files excluded."
+}

@@ -1,0 +1,7 @@
+{
+  "mode": "mini_processed_demo",
+  "reference_edges": 8,
+  "usable_pair_rows": 16,
+  "source": "Deterministic stratified subset of cleaned real/phase2/default tensor bundles.",
+  "scope": "Code-path verification only; not a paper-scale formal training dataset."
+}

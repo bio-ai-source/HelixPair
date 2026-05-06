@@ -1,0 +1,38 @@
+defaults:
+  - external_functional_mpra_benchmark.yaml
+
+runtime:
+  scenario: external_functional_mpra_benchmark
+  split_name: default
+  device: cpu
+
+training:
+  batch_size: 64
+  lr: 1.0e-4
+  weight_decay: 1.0e-3
+  epochs: 20
+  early_stop_patience: 6
+  gradient_accumulation: 1
+  init_from_previous_phase: false
+  init_checkpoint: "{project_root}/checkpoints/phase4/real/unseen_state/seed_11/phase4-real-unseen_state-seed11-20260326T042517Z/phase4.pt"
+  freeze_schedule:
+    phase5:
+      - embedding
+      - monomer_head
+      - geometry_head
+      - bridge_head
+      - chemical_potential_head
+      - state_gate_head
+      - partition_head
+
+data:
+  train_bundle: "{data_processed}/external_functional_mpra_benchmark/phase5/default/train_bundle.pt"
+  valid_bundle: "{data_processed}/external_functional_mpra_benchmark/phase5/default/valid_bundle.pt"
+
+tuning:
+  protocol_date: "2026-04-11"
+  locked_from_report: "{reports}/external_functional_mpra_benchmark/development_tuning/default/seed_11/best_summary.json"
+  locked_trial_number: 2
+  locked_selection_split: default
+  locked_selection_partition: valid
+  test_used_for_selection: false

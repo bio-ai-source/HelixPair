@@ -1,0 +1,25 @@
+defaults:
+  - base.yaml
+
+runtime:
+  scenario: real
+  split_name: reporter_default
+  device: cpu
+
+training:
+  batch_size: 4
+  lr: 5.0e-5
+  weight_decay: 1.0e-3
+  epochs: 30
+  early_stop_patience: 6
+  init_from_previous_phase: false
+  init_checkpoint: "{project_root}/checkpoints/phase4/real/unseen_pair/seed_11/phase4-real-unseen_pair-seed11-20260325T075926Z/phase4.pt"
+
+losses:
+  lambda_state_small_correction: 0.05
+  lambda_calibration: 0.01
+  lambda_composite_aux: 0.05
+
+data:
+  train_bundle: "{project_root}/data_processed/phase5_reporter/phase5/reporter_default/train_bundle.pt"
+  valid_bundle: "{project_root}/data_processed/phase5_reporter/phase5/reporter_default/valid_bundle.pt"

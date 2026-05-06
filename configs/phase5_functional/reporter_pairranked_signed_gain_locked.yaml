@@ -1,0 +1,37 @@
+defaults:
+  - base.yaml
+
+runtime:
+  scenario: real
+  split_name: reporter_pairranked_signed_gain_locked
+  device: cpu
+
+model:
+  enable_signed_gain_diagnostic: true
+
+training:
+  batch_size: 1
+  lr: 2.0e-4
+  weight_decay: 1.0e-3
+  epochs: 120
+  early_stop_patience: 24
+  init_from_previous_phase: false
+  init_checkpoint: "{project_root}/checkpoints/phase4/real/unseen_state/seed_11/phase4-real-unseen_state-seed11-20260326T042517Z/phase4.pt"
+  freeze_schedule:
+    phase5:
+      - embedding
+      - monomer_head
+      - geometry_head
+      - bridge_head
+      - chemical_potential_head
+      - state_gate_head
+      - partition_head
+
+losses:
+  lambda_state_small_correction: 0.0
+  lambda_calibration: 0.0
+  lambda_composite_aux: 0.05
+
+data:
+  train_bundle: "{project_root}/data_processed/phase5_reporter_pairranked/phase5/reporter_pairranked/train_bundle.pt"
+  valid_bundle: "{project_root}/data_processed/phase5_reporter_pairranked/phase5/reporter_pairranked/valid_bundle.pt"

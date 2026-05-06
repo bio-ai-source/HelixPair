@@ -1,0 +1,22 @@
+defaults:
+  - base.yaml
+
+runtime:
+  scenario: real
+
+tf_master:
+  inputs:
+    - "{project_root}/data_intermediate/jaspar2026_profiles.tsv"
+    - "{project_root}/data_intermediate/hocomoco_profiles.tsv"
+    - "{project_root}/data_intermediate/tfclass_catalog.tsv"
+  output: "{project_root}/data_intermediate/tf_master_table.tsv"
+
+evaluation:
+  prediction_table: "{project_root}/results/per_example_predictions/phase4/real/seed_11.parquet"
+  reference_graph: "{project_root}/data_intermediate/reference_graph.parquet"
+  reports_dir: "{project_root}/reports"
+
+figures:
+  metrics_table: "{project_root}/results/main_tables/main_metrics.json"
+  spacing_landscape: "{project_root}/results/main_tables/spacing_landscape.parquet"
+  main_dir: "{project_root}/figures/main"

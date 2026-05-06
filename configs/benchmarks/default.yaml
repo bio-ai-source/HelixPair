@@ -1,0 +1,473 @@
+defaults:
+  - base.yaml
+
+runtime:
+  scenario: real
+
+baselines:
+  output_dir: "{results}/baselines/{scenario}/{split_name}"
+  project_root: "{project_root}"
+  train_features: "{project_root}/data_processed/baselines/{scenario}/{split_name}/phase4_train_features.parquet"
+  valid_features: "{project_root}/data_processed/baselines/{scenario}/{split_name}/phase4_valid_features.parquet"
+  test_features: "{project_root}/data_processed/baselines/{scenario}/{split_name}/phase4_test_features.parquet"
+  train_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/train_bundle.pt"
+  valid_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/valid_bundle.pt"
+  test_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/test_bundle.pt"
+  device: "cuda"
+  external_baselines:
+    local_cnn:
+      repo_dir: "{project_root}"
+      comparison_tier: sequence_model_benchmark
+      ranking_eligible: true
+      adapter: "local_deep_bundle"
+      model_kind: "local_cnn"
+      train_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/train_bundle.pt"
+      valid_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/valid_bundle.pt"
+      report_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/valid_bundle.pt"
+      epochs: 30
+      batch_size: 128
+      lr: 1.0e-4
+      weight_decay: 1.0e-2
+      hidden_dim: 64
+      early_stop_patience: 5
+      device: "cuda"
+    local_transformer:
+      repo_dir: "{project_root}"
+      comparison_tier: sequence_model_benchmark
+      ranking_eligible: true
+      adapter: "local_deep_bundle"
+      model_kind: "local_transformer"
+      train_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/train_bundle.pt"
+      valid_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/valid_bundle.pt"
+      report_bundle: "{project_root}/data_processed/{scenario}/phase4/{split_name}/valid_bundle.pt"
+      epochs: 30
+      batch_size: 128
+      lr: 1.0e-4
+      weight_decay: 1.0e-2
+      hidden_dim: 64
+      early_stop_patience: 5
+      device: "cuda"
+    BOM:
+      repo_dir: "{external}/BOM"
+      comparison_tier: feature_benchmark
+      ranking_eligible: true
+      adapter: "bom_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_top_k_hits: 4
+      adapter_device: "cuda"
+      adapter_allow_device_fallback: true
+      adapter_n_estimators: 300
+      adapter_max_depth: 6
+      adapter_learning_rate: 0.05
+      adapter_subsample: 0.5
+      adapter_colsample_bytree: 0.5
+      adapter_pair_aware_calibration: true
+      adapter_pair_aware_feature_mode: minimal
+      adapter_pair_aware_rescue_std_threshold: 0.05
+      adapter_pair_aware_logistic_c_grid: [0.01, 0.1, 1.0]
+      adapter_pair_aware_top_k_hits: 4
+      command: ["Rscript", "-e", "library(BagOfMotifs)"]
+      preflight_command: ["Rscript", "-e", "library(BagOfMotifs)"]
+      required_executables: ["Rscript"]
+    SATORI:
+      repo_dir: "{external}/SATORI"
+      comparison_tier: interaction_benchmark
+      ranking_eligible: true
+      adapter: "satori_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_holdout_fraction: 0.2
+      adapter_pair_aware_calibration: true
+      adapter_pair_aware_feature_mode: minimal
+      adapter_pair_aware_rescue_std_threshold: 0.05
+      adapter_pair_aware_logistic_c_grid: [0.01, 0.1, 1.0]
+      adapter_pair_aware_top_k_hits: 4
+      adapter_params_file: "{repo_dir}/modelsparam/CNN-MH-noEmbds_hyperParams.txt"
+      command: ["{python}", "satori.py"]
+      preflight_command: ["{python}", "satori.py", "--help"]
+      env:
+        PYTHONPATH: "{repo_dir};{repo_dir}/satori"
+    TIANA:
+      repo_dir: "{external}/TIANA"
+      comparison_tier: interaction_benchmark
+      ranking_eligible: true
+      adapter: "tiana_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_learning_rate: 1.0e-5
+      adapter_epochs: 30
+      adapter_batch_size: 256
+      adapter_pair_aware_calibration: true
+      adapter_pair_aware_feature_mode: minimal
+      adapter_pair_aware_rescue_std_threshold: 0.05
+      adapter_pair_aware_logistic_c_grid: [0.01, 0.1, 1.0]
+      adapter_pair_aware_top_k_hits: 4
+      command: ["{python}", "tiana.py"]
+      preflight_command: ["{python}", "tiana.py", "--help"]
+      required_modules: ["tensorflow", "numpy", "pandas", "sklearn", "seaborn", "logomaker"]
+    COBIND:
+      repo_dir: "{external}/COBIND"
+      comparison_tier: interaction_benchmark
+      ranking_eligible: true
+      adapter: "cobind_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_top_k_hits: 4
+      adapter_pair_aware_calibration: true
+      adapter_pair_aware_feature_mode: minimal
+      adapter_pair_aware_rescue_std_threshold: 0.05
+      adapter_pair_aware_logistic_c_grid: [0.01, 0.1, 1.0]
+      adapter_pair_aware_top_k_hits: 4
+      command: ["{python}", "bin/cobind.py"]
+      preflight_command: ["{python}", "bin/cobind.py", "-h"]
+      required_modules: ["numpy", "pandas", "scipy", "bx", "pyBigWig"]
+      env:
+        PYTHONPATH: "{repo_dir}/lib"
+    TF_COMB:
+      repo_dir: "{external}/TF_COMB"
+      comparison_tier: interaction_benchmark
+      ranking_eligible: true
+      adapter: "tf_comb_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_top_k_hits: 4
+      adapter_pair_aware_calibration: true
+      adapter_pair_aware_feature_mode: minimal
+      adapter_pair_aware_rescue_std_threshold: 0.05
+      adapter_pair_aware_logistic_c_grid: [0.01, 0.1, 1.0]
+      adapter_pair_aware_top_k_hits: 4
+      command: ["{python}", "-m", "tfcomb"]
+      preflight_command: ["{python}", "-c", "import tfcomb"]
+      required_modules: ["numpy", "scipy", "pandas", "dill", "networkx", "seaborn", "statsmodels", "tfcomb"]
+    GET:
+      repo_dir: "{external}/GET"
+      comparison_tier: sequence_model_benchmark
+      ranking_eligible: true
+      adapter: "get_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_num_bins: 4
+      adapter_top_k_hits: 4
+      adapter_embed_dim: 128
+      adapter_heads: 4
+      adapter_layers: 4
+      adapter_learning_rate: 5.0e-4
+      adapter_weight_decay: 1.0e-4
+      adapter_epochs: 25
+      adapter_batch_size: 256
+      adapter_holdout_fraction: 0.2
+      adapter_pair_aware_calibration: true
+      adapter_pair_aware_feature_mode: minimal
+      adapter_pair_aware_rescue_std_threshold: 0.05
+      adapter_pair_aware_logistic_c_grid: [0.01, 0.1, 1.0]
+      adapter_pair_aware_top_k_hits: 4
+      command: ["{python}", "-m", "get_model.run"]
+      preflight_command: ["{python}", "-m", "get_model.run", "--help"]
+      required_modules: ["torch", "lightning", "hydra", "omegaconf", "zarr", "timm", "wandb", "get_model"]
+    BPNet_probe:
+      enabled: false
+      disabled_reason: "Requires native BPNet output tables staged under results/external_outputs/BPNet/{scenario}/{split_name}/."
+      repo_dir: "{external}/BPNet"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_logistic_c: 0.1
+      adapter_numeric_pca_components: 8
+      adapter_metadata_numeric: ["overlap_len"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/BPNet/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/BPNet/{scenario}/{split_name}/{report_partition}.parquet"
+    BPNet_probe_tfaware:
+      enabled: false
+      disabled_reason: "Diagnostic-only TF-aware variant; not benchmark-eligible."
+      repo_dir: "{external}/BPNet"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_metadata_categoricals: ["left_tf", "right_tf"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/BPNet/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/BPNet/{scenario}/{split_name}/{report_partition}.parquet"
+    BPNet_probe_geom:
+      enabled: false
+      disabled_reason: "Diagnostic-only geometry-assisted variant; not benchmark-eligible."
+      repo_dir: "{external}/BPNet"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_metadata_numeric: ["edge_gap", "overlap_len"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/BPNet/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/BPNet/{scenario}/{split_name}/{report_partition}.parquet"
+    BPNet_probe_public_context:
+      enabled: false
+      disabled_reason: "Diagnostic-only public-context variant using geometry plus motif-conditioned pair features; not benchmark-eligible."
+      repo_dir: "{external}/BPNet"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_numeric_pca_components: 16
+      adapter_metadata_numeric: ["edge_gap", "overlap_len"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_motif_pair_features: true
+      adapter_motif_top_k_hits: 4
+      adapter_train_outputs: "{project_root}/results/external_outputs/BPNet/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/BPNet/{scenario}/{split_name}/{report_partition}.parquet"
+    ChromBPNet_probe:
+      enabled: false
+      disabled_reason: "Requires native ChromBPNet output tables staged under results/external_outputs/ChromBPNet/{scenario}/{split_name}/."
+      repo_dir: "{external}/ChromBPNet"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_logistic_c: 0.1
+      adapter_numeric_pca_components: 8
+      adapter_metadata_numeric: ["overlap_len"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/ChromBPNet/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/ChromBPNet/{scenario}/{split_name}/{report_partition}.parquet"
+    ChromBPNet_probe_tfaware:
+      enabled: false
+      disabled_reason: "Diagnostic-only TF-aware variant; not benchmark-eligible."
+      repo_dir: "{external}/ChromBPNet"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_metadata_categoricals: ["left_tf", "right_tf"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/ChromBPNet/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/ChromBPNet/{scenario}/{split_name}/{report_partition}.parquet"
+    ChromBPNet_probe_geom:
+      enabled: false
+      disabled_reason: "Diagnostic-only geometry-assisted variant; not benchmark-eligible."
+      repo_dir: "{external}/ChromBPNet"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_metadata_numeric: ["edge_gap", "overlap_len"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/ChromBPNet/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/ChromBPNet/{scenario}/{split_name}/{report_partition}.parquet"
+    ChromBPNet_probe_public_context:
+      enabled: false
+      disabled_reason: "Diagnostic-only public-context variant using geometry plus motif-conditioned pair features; not benchmark-eligible."
+      repo_dir: "{external}/ChromBPNet"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_numeric_pca_components: 16
+      adapter_metadata_numeric: ["edge_gap", "overlap_len"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_motif_pair_features: true
+      adapter_motif_top_k_hits: 4
+      adapter_train_outputs: "{project_root}/results/external_outputs/ChromBPNet/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/ChromBPNet/{scenario}/{split_name}/{report_partition}.parquet"
+    Basenji2_probe:
+      enabled: false
+      disabled_reason: "Requires native Basenji2 output tables staged under results/external_outputs/Basenji2/{scenario}/{split_name}/."
+      repo_dir: "{external}/Basenji2"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_logistic_c: 0.1
+      adapter_numeric_pca_components: 8
+      adapter_metadata_numeric: ["overlap_len"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/{report_partition}.parquet"
+    Basenji2_probe_tfaware:
+      enabled: false
+      disabled_reason: "Diagnostic-only TF-aware variant; not benchmark-eligible."
+      repo_dir: "{external}/Basenji2"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_metadata_categoricals: ["left_tf", "right_tf"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/{report_partition}.parquet"
+    Basenji2_probe_geom:
+      enabled: false
+      disabled_reason: "Diagnostic-only geometry-assisted variant; not benchmark-eligible."
+      repo_dir: "{external}/Basenji2"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_metadata_numeric: ["edge_gap", "overlap_len"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/{report_partition}.parquet"
+    Basenji2_probe_orient:
+      enabled: false
+      disabled_reason: "Diagnostic-only orientation-assisted variant; not benchmark-eligible."
+      repo_dir: "{external}/Basenji2"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_logistic_c: 0.03
+      adapter_feature_columns: ["human_center_mean"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/{report_partition}.parquet"
+    Basenji2_probe_public_context:
+      enabled: false
+      disabled_reason: "Diagnostic-only public-context variant using geometry plus motif-conditioned pair features; not benchmark-eligible."
+      repo_dir: "{external}/Basenji2"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_numeric_pca_components: 16
+      adapter_metadata_numeric: ["edge_gap", "overlap_len"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_motif_pair_features: true
+      adapter_motif_top_k_hits: 4
+      adapter_train_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Basenji2/{scenario}/{split_name}/{report_partition}.parquet"
+    Enformer_probe:
+      enabled: false
+      disabled_reason: "Requires native Enformer output tables staged under results/external_outputs/Enformer/{scenario}/{split_name}/."
+      repo_dir: "{external}/Enformer"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_logistic_c: 0.1
+      adapter_numeric_pca_components: 8
+      adapter_metadata_numeric: ["overlap_len"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/{report_partition}.parquet"
+    Enformer_probe_tfaware:
+      enabled: false
+      disabled_reason: "Diagnostic-only TF-aware variant; not benchmark-eligible."
+      repo_dir: "{external}/Enformer"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_metadata_categoricals: ["left_tf", "right_tf"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/{report_partition}.parquet"
+    Enformer_probe_geom:
+      enabled: false
+      disabled_reason: "Diagnostic-only geometry-assisted variant; not benchmark-eligible."
+      repo_dir: "{external}/Enformer"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_metadata_numeric: ["edge_gap", "overlap_len"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/{report_partition}.parquet"
+    Enformer_probe_orient:
+      enabled: false
+      disabled_reason: "Diagnostic-only orientation-assisted variant; not benchmark-eligible."
+      repo_dir: "{external}/Enformer"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_logistic_c: 0.03
+      adapter_feature_columns: ["human_mean_all"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_train_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/{report_partition}.parquet"
+    Enformer_probe_public_context:
+      enabled: false
+      disabled_reason: "Diagnostic-only public-context variant using geometry plus motif-conditioned pair features; not benchmark-eligible."
+      repo_dir: "{external}/Enformer"
+      comparison_tier: classic_probe
+      ranking_eligible: false
+      adapter: "tabular_probe_phase4"
+      adapter_phase: "phase4"
+      adapter_report_partition: "valid"
+      adapter_merge_on: ["seq_id"]
+      adapter_method: "logistic"
+      adapter_numeric_pca_components: 16
+      adapter_metadata_numeric: ["edge_gap", "overlap_len"]
+      adapter_metadata_categoricals: ["orientation"]
+      adapter_motif_pair_features: true
+      adapter_motif_top_k_hits: 4
+      adapter_train_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/train.parquet"
+      adapter_report_outputs: "{project_root}/results/external_outputs/Enformer/{scenario}/{split_name}/{report_partition}.parquet"
+
+external_repositories:
+  BOM:
+    url: "https://github.com/ewonglab/BOM_package.git"
+  COBIND:
+    url: "https://github.com/liguowang/cobind.git"
+  GET:
+    url: "https://github.com/GET-Foundation/get_model.git"
+  SATORI:
+    url: "https://github.com/fahadahaf/SATORI.git"
+  TF_COMB:
+    url: "https://github.com/loosolab/TF-COMB.git"
+  TIANA:
+    url: "https://github.com/rzzli/TIANA.git"
+  BPNet:
+    url: "https://github.com/kundajelab/bpnet.git"
+  ChromBPNet:
+    url: "https://github.com/kundajelab/chrombpnet.git"
+  Basenji2:
+    url: "https://github.com/calico/basenji.git"
+  Enformer:
+    url: "https://github.com/google-deepmind/deepmind-research.git"

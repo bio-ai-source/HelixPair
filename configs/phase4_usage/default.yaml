@@ -1,0 +1,39 @@
+defaults:
+  - base.yaml
+
+runtime:
+  scenario: real
+  split_name: default
+
+training:
+  batch_size: 8
+  lr: 5.0e-5
+  weight_decay: 0.0
+  epochs: 120
+  init_from_previous_phase: false
+  init_checkpoint: "{checkpoints}/phase3/real/default/seed_11/phase3-real-default-seed11-20260322T142553Z/phase3.pt"
+  allow_joint_residual_tuning_if_identifiable: false
+  joint_residual_modules:
+    - bridge_head.bridge_scale
+  freeze_schedule:
+    phase1:
+      - embedding
+      - monomer_head
+    phase2:
+      - geometry_head
+      - bridge_head
+    phase3:
+      - chemical_potential_head
+    phase4: []
+    phase5:
+      - state_gate_head
+      - bridge_head.bridge_scale
+
+losses:
+  lambda_state_small_correction: 0.01
+  lambda_state_ranking: 4.0
+  lambda_calibration: 0.0
+
+data:
+  train_bundle: "{data_processed}/{scenario}/phase4/{split_name}/train_bundle.pt"
+  valid_bundle: "{data_processed}/{scenario}/phase4/{split_name}/valid_bundle.pt"

@@ -1,0 +1,13 @@
+section,slice,metric,helixpair_value,paper_display,reported_margin,ci_low,ci_high,bh_fdr,n,source
+biochemical,held_out_tf_pairs,auprc,0.718246,0.718,,,,,24576,Figure 2 / manuscript Section 6.1
+biochemical,held_out_tf_pairs,auroc,0.746717,0.747,,,,,24576,Figure 2 / manuscript Section 6.1
+biochemical,held_out_family_combinations,auprc,0.956005,0.956,,,,,4096,Figure 2 / manuscript Section 6.1
+biochemical,held_out_family_combinations,auroc,0.948862,0.949,,,,,4096,Figure 2 / manuscript Section 6.1
+biochemical,sequence_locus,auprc,0.73282,0.733,,,,,,Figure 2 / manuscript Section 6.1
+biochemical,sequence_locus,auroc,0.725421,0.725,,,,,,Figure 2 / manuscript Section 6.1
+deployment,staged_standard,auprc,0.827,0.827,0.214,0.192,0.236,8.1e-4,,Table 3 / manuscript Section 6.3
+deployment,staged_unseen_pair,auprc,0.718,0.718,0.127,0.066,0.19,0.0023,,Table 3 / manuscript Section 6.3
+deployment,staged_unseen_state,auprc,0.763,0.763,0.115,0.095,0.133,8.1e-4,,Table 3 / manuscript Section 6.3
+deployment,matched_standard,auprc,0.827,0.827,0.034,0.008,0.062,0.022,,Table 3 / manuscript Section 6.3
+reporter,lentimpra_k562,auprc,0.836,0.836,0.07,0.034,0.106,2.2e-4,,Table 3 / manuscript Section 6.3
+reporter,lentimpra_hepg2,auprc,0.893,0.893,0.016,-0.003,0.034,0.060,,Table 3 / manuscript Section 6.3

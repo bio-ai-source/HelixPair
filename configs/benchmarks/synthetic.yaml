@@ -1,0 +1,10 @@
+defaults:
+  - default.yaml
+
+runtime:
+  scenario: synthetic
+
+baselines:
+  output_dir: "{results}/baselines/{scenario}/{split_name}"
+  train_features: "{project_root}/data_processed/baselines/{scenario}/{split_name}/phase4_train_features.parquet"
+  valid_features: "{project_root}/data_processed/baselines/{scenario}/{split_name}/phase4_valid_features.parquet"

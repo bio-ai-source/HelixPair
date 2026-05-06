@@ -1,0 +1,9 @@
+defaults:
+  - default.yaml
+
+runtime:
+  scenario: synthetic
+
+data:
+  train_bundle: "{data_processed}/{scenario}/phase5/{split_name}/train_bundle.pt"
+  valid_bundle: "{data_processed}/{scenario}/phase5/{split_name}/valid_bundle.pt"

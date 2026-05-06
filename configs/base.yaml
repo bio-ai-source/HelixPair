@@ -1,0 +1,78 @@
+paths:
+  project_root: .
+  data_raw: "{project_root}/data_raw"
+  data_intermediate: "{project_root}/data_intermediate"
+  data_processed: "{project_root}/data_processed"
+  splits: "{project_root}/splits"
+  checkpoints: "{project_root}/checkpoints"
+  results: "{project_root}/results"
+  figures: "{project_root}/figures"
+  reports: "{project_root}/reports"
+  external: "{project_root}/external"
+  external_assets: "{project_root}/external_assets"
+
+runtime:
+  device: cuda
+  amp: true
+  scenario: real
+  seed: 11
+
+assets:
+  include_optional: true
+
+model:
+  num_families: 2048
+  num_subfamilies: 2048
+  num_paralogs: 2048
+  num_tfs: 4096
+  geometry_dim: 19
+  availability_dim: 16
+  state_dim: 32
+  sequence_channels: 9
+  embedding_dim: 32
+  rank: 8
+  interface_channels: 13
+  num_gap_bins: 25
+
+training:
+  batch_size: 128
+  lr: 1.0e-4
+  weight_decay: 1.0e-2
+  epochs: 40
+  early_stop_patience: 8
+  gradient_clip: 1.0
+  num_workers: 0
+  pin_memory: true
+  gradient_accumulation: 1
+
+losses:
+  lambda_bridge_null: 0.1
+  lambda_geometry_smooth: 0.1
+  lambda_spacing_emd: 0.2
+  lambda_spacing_kl: 0.1
+  lambda_orientation: 0.1
+  lambda_state_small_correction: 0.1
+  lambda_state_ranking: 1.0
+  lambda_calibration: 0.1
+  lambda_composite_aux: 0.1
+  lambda_monotonicity: 0.1
+
+ablations:
+  disable_hierarchy_embedding: false
+  disable_anchor_refinement: false
+  disable_bridge_head: false
+  disable_state_gate: false
+  disable_partition_head: false
+  disable_availability: false
+  disable_helical_basis: false
+
+data:
+  dataset_manifest: "{project_root}/dataset_manifest.tsv"
+  prepared_manifest: "{project_root}/repro/data_manifest.tsv"
+  window_length: 96
+
+tf_master:
+  output: "{project_root}/data_intermediate/tf_master_table.tsv"
+
+splits:
+  tf_master_table: "{project_root}/data_intermediate/tf_master_table.tsv"

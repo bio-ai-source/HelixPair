@@ -1,0 +1,15 @@
+defaults:
+  - base.yaml
+
+runtime:
+  scenario: real
+  split_name: default
+
+training:
+  batch_size: 128
+  lr: 1.0e-4
+  epochs: 50
+
+data:
+  train_bundle: "{data_processed}/{scenario}/phase2/{split_name}/train_bundle.pt"
+  valid_bundle: "{data_processed}/{scenario}/phase2/{split_name}/valid_bundle.pt"

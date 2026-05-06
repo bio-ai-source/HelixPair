@@ -1,0 +1,6 @@
+split,helixpair_auprc,helixpair_auroc,helical_recovery
+default,0.632745,0.648538,
+unseen_pair,0.718246,0.746717,0.749309
+unseen_family,0.956005,0.948862,0.823615
+unseen_state,0.573107,0.605485,0.74636
+sequence_locus,0.73282,0.725421,0.738092

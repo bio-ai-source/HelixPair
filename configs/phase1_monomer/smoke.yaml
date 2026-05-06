@@ -1,0 +1,10 @@
+defaults:
+  - phase1_monomer/synthetic.yaml
+
+runtime:
+  seed: 11
+
+training:
+  batch_size: 32
+  epochs: 1
+  early_stop_patience: 1

@@ -1,0 +1,26 @@
+dataset_id	phase	source_type	url	local_dir	required	priority	description
+cap_selex_repository	phase2	repository	https://www.repository.cam.ac.uk/handle/1810/385089	cap_selex/repository	yes	1	CAP-SELEX Cambridge repository entry
+cap_selex_ena	phase2	accession	https://www.ebi.ac.uk/ena/browser/view/PRJEB66722	cap_selex/ena	yes	1	CAP-SELEX raw-read project declared by the 2025 study
+cap_selex_relative_affinity	phase2	github	https://github.com/YinLabTJ/Relative_Affinity_CAP-SELEX	cap_selex/relative_affinity	yes	1	CAP-SELEX relative affinity analysis code
+cap_selex_mi	phase2	github	https://github.com/YinLabTJ/MI_CAP-SELEX	cap_selex/mi	yes	1	CAP-SELEX mutual information analysis code
+cap_selex_kmercount	phase2	github	https://github.com/jutaipal/kmercount_with_localmax	cap_selex/kmercount	no	2	k-mer count helper
+cap_selex_moder2	phase2	github	https://github.com/jttoivon/moder2	cap_selex/moder2	no	2	MODER2 motif modeling
+cap_selex_moder	phase2	github	https://github.com/jttoivon/MODER	cap_selex/moder	no	2	MODER motif modeling
+jaspar2026	phase1	profile_db	https://jaspar2026.elixir.no/downloads/	jaspar2026	yes	1	JASPAR 2026 motif database
+hocomoco	phase1	profile_db	https://hocomoco11.autosome.org/	hocomoco	yes	1	HOCOMOCO motif database
+cisbp	phase1	profile_db	https://cisbp.org/	cisbp	no	2	CIS-BP motif and TF metadata
+uniprobe	phase1	profile_db	https://the_brain.bwh.harvard.edu/uniprobe/downloads.php	uniprobe	no	2	UniPROBE PBM resource
+htpselex	phase1	profile_db	https://epd.expasy.org/htpselex/	htpselex	no	2	HTP-SELEX resource
+dnashaper	phase1	software	https://bioconductor.org/packages/DNAshapeR/	dnashaper	yes	1	DNAshapeR package page
+tfclass	phase1	catalog	https://tfclass.bioinf.med.uni-goettingen.de/	tfclass	yes	1	TFClass hierarchy
+human_tf_catalog	phase1	catalog	https://humantfs.ccbr.utoronto.ca/download.php	human_tf_catalog	yes	1	Human TF catalog
+get_model	phase3	github	https://github.com/GET-Foundation/get_model	get_model	yes	1	GET reference implementation
+catlas	phase3	portal	https://decoder-genetics.wustl.edu/catlas/dataset_resource.php?ID=humantissues	catlas	yes	1	CATlas resource page
+hca	phase3	portal	https://explore.data.humancellatlas.org/projects/c31fa434-c9ed-4263-a9b6-d9ffb9d44005	hca	yes	1	Human Cell Atlas project
+geo_gse184462	phase3	accession	https://www.omicsdi.org/dataset/geo/GSE184462	geo/GSE184462	no	2	GEO entry used by GET ecosystem
+encode_screen	phase4	portal	https://screen-v4.wenglab.org/	encode/screen	yes	1	ENCODE SCREEN cCRE portal
+encode_matrix	phase4	portal	https://www.encodeproject.org/matrix/?type=Experiment	encode/matrix	yes	1	ENCODE experiment matrix
+encode_tre_mpra_k562	phase5	accession	https://www.encodeproject.org/functional-characterization-experiments/ENCSR382BVV/	external_functional/encode_tre_mpra_k562	yes	1	Nature 2024 large-scale K562 lentiMPRA functional benchmark
+encode_tre_mpra_hepg2	phase5	accession	https://www.encodeproject.org/functional-characterization-experiments/ENCSR022GQD/	external_functional/encode_tre_mpra_hepg2	yes	1	Nature 2024 large-scale HepG2 lentiMPRA functional benchmark
+eperturbdb_enhancer_catalog	phase5	database	http://reggen.iiitd.edu.in:1207/ePerturbDB-html/downloads/enhancers_details_simple.bed	external_functional/eperturbdb_enhancer_catalog	yes	1	ePerturbDB endogenous enhancer perturbation catalog BED
+hcr_flowfish_pubdata	phase5	accession	https://www.encodeproject.org/publication-data/ENCSR455UGU/	external_functional/hcr_flowfish_pubdata	yes	1	HCR-FlowFISH publication-data bundle on ENCODE

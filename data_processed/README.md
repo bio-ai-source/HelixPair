@@ -1,0 +1,1 @@
+This directory contains a cleaned mini processed phase2 dataset sampled from the full real/default tensor bundles. It is intended for runnable code-path verification only; use full processed bundles for paper-scale training.

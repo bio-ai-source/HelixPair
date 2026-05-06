@@ -1,0 +1,6 @@
+file,description
+helixpair_primary_metrics.csv,selected full-method values displayed in the manuscript
+helixpair_biochemical_source.csv,full-method biochemical source values
+helixpair_reporter_source.csv,full-method reporter source values
+helixpair_helical_geometry_curve.csv,helical geometry diagnostic source values
+helixpair_case_examples.csv,full-method case-study decomposition values

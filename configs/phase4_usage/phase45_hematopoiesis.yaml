@@ -1,0 +1,26 @@
+defaults:
+  - base.yaml
+
+runtime:
+  scenario: phase45_hematopoiesis
+  split_name: default
+  device: cpu
+
+training:
+  batch_size: 256
+  lr: 1.0e-4
+  epochs: 40
+  init_from_previous_phase: false
+  freeze_schedule:
+    phase4:
+      - embedding
+      - monomer_head
+      - geometry_head
+      - bridge_head
+      - chemical_potential_head
+      - state_gate_head
+      - partition_head
+
+data:
+  train_bundle: "{data_processed}/{scenario}/phase4/{split_name}/train_bundle.pt"
+  valid_bundle: "{data_processed}/{scenario}/phase4/{split_name}/valid_bundle.pt"

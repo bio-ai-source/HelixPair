@@ -1,0 +1,5 @@
+defaults:
+  - default.yaml
+
+runtime:
+  scenario: external_functional_mpra_benchmark
