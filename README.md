@@ -1,4 +1,4 @@
-# HelixPair NeurIPS 2026 Full Clean Code Package
+# HelixPair: A Transferable Local Grammar for Transcription-Factor-Pair Cooperativity from Biochemical Measurements to Cellular States
 
 This package contains the clean HelixPair method code corresponding to
 `HelixPair_NeurIPS2026_reviewed.docx`.
